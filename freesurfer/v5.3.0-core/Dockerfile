@@ -9,10 +9,10 @@
 #   docker build --tag slove/freesurfer-core:5.3 .
 #
 # Example usage:
-#   docker run -ti \
+#   docker run --rm -ti \
 #       -v /input/directory:/input \
 #       -v `/output/directory:/output \
-#       slove/freesurfer-core \
+#       slove/freesurfer-core:5.3 \
 #       mri_convert -at /input/inputvolume.nii /output/outvolume.mgz
 #
 
