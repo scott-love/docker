@@ -19,6 +19,7 @@ To run a Freesurfer command from this image you can do the following:
 docker run --rm -ti \
   -v </path/to/input/data>:/subjects \
   sclove/freesurfer5.3-core \
+  mri_convert
 ```
 * Note that you are mounting the directory (```-v``` flag) which contains your data in the container at ```/subjects``` and setting this as Freesurfer's default subjects directory.
 
