@@ -1,15 +1,19 @@
-# Create a Freesurfer 5.3 docker container
-#
+# Create a Freesurfer 5.3 docker container without the subjects, trctrain, and average data.
 #
 # Example build:
-#   docker build --tag slove/freesurfer:5.3 .
+#   docker build --tag slove/freesurfer-core:5.3 .
+#
+# Note: The resulting container is ~3GB.
+#
+# Example build:
+#   docker build --no-cache -t slove/freesurfer-core:5.3 .
 #
 # Example usage:
 #   docker run -ti \
 #       -v /input/directory:/input \
-#       -v /output/directory:/output \
-#       slove/freesurfer:5.3 \
-#       mri_convert -at /input/inputvolume.nii /output/outvolume.mgz
+#       -v `/output/directory:/output \
+#       vistalab/freesurfer-core \
+#       mri_convert -at /input/inputvolume.m3z /output/outvolume.mgz
 #
 
 # Start with ubuntu
@@ -20,6 +24,9 @@ FROM ubuntu:trusty
 RUN apt-get update \
     && apt-get -y install tcsh tar wget libgomp1 perl-modules bc \
     && wget -N -qO- ftp://surfer.nmr.mgh.harvard.edu/pub/dist/freesurfer/5.3.0/freesurfer-Linux-centos4_x86_64-stable-pub-v5.3.0.tar.gz | tar -xzv -C /opt \
+    && rm -rf /opt/freesurfer/subjects/* \
+    && rm -rf /opt/freesurfer/average/* \
+    && rm -rf /opt/freesurfer/trctrain/* \
     && mkdir /output
 
 # Configure license
