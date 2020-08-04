@@ -6,14 +6,14 @@
 # Note: The resulting container is ~3GB.
 #
 # Example build:
-#   docker build --no-cache -t slove/freesurfer-core:5.3 .
+#   docker build --tag slove/freesurfer-core:5.3 .
 #
 # Example usage:
 #   docker run -ti \
 #       -v /input/directory:/input \
 #       -v `/output/directory:/output \
-#       vistalab/freesurfer-core \
-#       mri_convert -at /input/inputvolume.m3z /output/outvolume.mgz
+#       slove/freesurfer-core \
+#       mri_convert -at /input/inputvolume.nii /output/outvolume.mgz
 #
 
 # Start with ubuntu
