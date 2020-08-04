@@ -1,4 +1,4 @@
-# sclove/freesurfer5.3
+# sclove/freesurfer5.3-core
 
 Create a docker image of Freesurfer version 5.3.0 without the ```subjects```, ```trctrain```, and ```average``` data to reduce its size to about 3Gb from about 8Gb.
 
