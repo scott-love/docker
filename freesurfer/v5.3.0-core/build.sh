@@ -1,1 +1,1 @@
-docker build --tag sclove/freesurfer-core .
+docker build --tag sclove/freesurfer5.3-core .
