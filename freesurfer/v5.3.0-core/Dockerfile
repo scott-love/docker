@@ -1,12 +1,12 @@
 # Create a Freesurfer 5.3 docker container without the subjects, trctrain, and average data.
 #
 # Example build:
-#   docker build --tag slove/freesurfer-core:5.3 .
+#   docker build --tag slove/freesurfer5.3-core:latest .
 #
 # Note: The resulting container is ~3GB.
 #
 # Example build:
-#   docker build --tag slove/freesurfer-core:5.3 .
+#   docker build --tag slove/freesurfer5.3-core:latest .
 #
 # Example usage:
 #   docker run --rm -ti \
