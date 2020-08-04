@@ -14,15 +14,12 @@ cd docker/freesurfer/v5.3.0-base/
 ./build.sh
 ```
 ### Example Usage ###
-To run a Freesurfer command (e.g., ```recon-all```) from this image you can do the following:
+To run a Freesurfer command from this image you can do the following:
 ```
 docker run --rm -ti \
   -v </path/to/input/data>:/subjects \
   sclove/freesurfer5.3-core \
-  recon-all -i /subjects/<t1_file.nii.gz> -subjid <subjectID> -all
 ```
-* Note that you are mounting the directory (```-v``` flag) which contains your data in the container at ```/input``` and mounting the directory where you want your output data within the container at ```/opt/freesurfer/subjects``` - which is Freesurfer's default subjects directory.
-
-* The name of the freesurfer executable and the args (relative to the contianer) should be provided at the end of the ```docker run``` command. Remember that if those inputs are files or other resources, they must also be mounted in the container and the full path to them (again, relative to the container) must be provided.
+* Note that you are mounting the directory (```-v``` flag) which contains your data in the container at ```/subjects``` and setting this as Freesurfer's default subjects directory.
 
 ##### Note that the idea behind and content of this repository follows entirely that of https://github.com/vistalab/docker/tree/master/freesurfer.
