@@ -6,7 +6,7 @@ Create a docker image of mrtrix3.0.2
 To build the image, either download the files from this repo or clone the repo:
 ```
 git clone https://github.com/scott-love/docker
-cd docker/mrtrix
+cd docker/mrtrix/v3.0.2
 ./build.sh
 ```
 ### Example Usage ###

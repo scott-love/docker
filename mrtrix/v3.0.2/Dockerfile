@@ -2,6 +2,8 @@
 # Get a working version of MRtrix3.0.2
 # FSL 6.0.4 & ANTs v2.3.4 are also installed
 # NOTE: I have not checked all the functionality of these 3 softwares.
+# NOTE: I hade to increase the memory in my Docker preferences before the
+#       MRtrix install would work! Before there were errors in the install.
 ################################################################################
 
 ARG DEBIAN_VERSION=buster
@@ -89,7 +91,6 @@ rm -r /tmp/ANTs
 ENV PATH=$ANTS_FOLDER/bin/:$PATH
 
 # MRtrix3 setup
-# Commit checked out is 3.0_RC3 tag with subsequent hotfixes as at 14/12/2018
 RUN git clone https://github.com/MRtrix3/mrtrix3.git mrtrix3 && \
     cd mrtrix3 && \
     git checkout ${MRTRIX_VERSION} && \
@@ -101,5 +102,4 @@ RUN git clone https://github.com/MRtrix3/mrtrix3.git mrtrix3 && \
 ENV PATH=/mrtrix3/bin:$PATH
 ENV PYTHONPATH=/mrtrix3/lib:$PYTHONPATH
 
-
-ENTRYPOINT ["/bin/bash"]
+ENTRYPOINT [ "/bin/bash", "-c"]
