@@ -15,6 +15,6 @@ To run an MRtrix command from this image you can do the following:
 docker run --rm -ti \
   -v </path/to/input/data>:/data \
   sclove/mrtrix3.0.2 \
-  COMMAND
+  mrconvert
 ```
 * Note that you are mounting the directory (```-v``` flag) which contains your data in the container at ```/data```.
