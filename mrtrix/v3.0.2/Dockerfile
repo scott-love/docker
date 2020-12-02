@@ -20,7 +20,6 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
     git-core \
     cmake \
     g++ \
-    zlib1g-dev \
     bc \
     build-essential \
     dc \
@@ -31,11 +30,9 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
     tar \
     tcsh \
     unzip \
-    wget \
     libeigen3-dev \
     libfftw3-dev \
     libtiff5-dev \
-    zlib1g-dev \
   && apt-get clean -y && apt-get autoclean -y && apt-get autoremove -y
 
 # Specify where to install packages:
