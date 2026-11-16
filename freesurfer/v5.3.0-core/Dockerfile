@@ -29,10 +29,13 @@ RUN apt-get -o Acquire::Check-Valid-Until=false update \
     && rm -rf /var/lib/apt/lists/*
 
 
+
 # Download and install FreeSurfer 5.3.0
 RUN wget --tries=5 --timeout=60 \
       -O /tmp/freesurfer.tar.gz \
       https://surfer.nmr.mgh.harvard.edu/pub/dist/freesurfer/5.3.0/freesurfer-Linux-centos4_x86_64-stable-pub-v5.3.0.tar.gz \
+    && echo "084d341cdf98305127aaeee48a6f4e0b  /tmp/freesurfer.tar.gz" \
+      | md5sum -c - \
     && tar -xzf /tmp/freesurfer.tar.gz -C /opt \
     && rm /tmp/freesurfer.tar.gz \
     && rm -rf /opt/freesurfer/subjects/* \
