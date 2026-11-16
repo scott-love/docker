@@ -43,23 +43,24 @@ RUN wget --tries=5 --timeout=60 \
 # Configure license
 COPY license /opt/freesurfer/.license
 
+
 # Configure basic FreeSurfer environment
-ENV OS Linux
-ENV FS_OVERRIDE 0
-ENV FIX_VERTEX_AREA=
-ENV SUBJECTS_DIR /subjects
-ENV FSF_OUTPUT_FORMAT nii.gz
-ENV MNI_DIR /opt/freesurfer/mni
-ENV LOCAL_DIR /opt/freesurfer/local
-ENV FREESURFER_HOME /opt/freesurfer
-ENV FSFAST_HOME /opt/freesurfer/fsfast
-ENV MINC_BIN_DIR /opt/freesurfer/mni/bin
-ENV MINC_LIB_DIR /opt/freesurfer/mni/lib
-ENV MNI_DATAPATH /opt/freesurfer/mni/data
-ENV FMRI_ANALYSIS_DIR /opt/freesurfer/fsfast
-ENV PERL5LIB /opt/freesurfer/mni/lib/perl5/5.8.5
-ENV MNI_PERL5LIB /opt/freesurfer/mni/lib/perl5/5.8.5
-ENV PATH /opt/freesurfer/bin:/opt/freesurfer/fsfast/bin:/opt/freesurfer/tktools:/opt/freesurfer/mni/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+ENV OS=Linux \
+    FS_OVERRIDE=0 \
+    FIX_VERTEX_AREA= \
+    SUBJECTS_DIR=/subjects \
+    FSF_OUTPUT_FORMAT=nii.gz \
+    MNI_DIR=/opt/freesurfer/mni \
+    LOCAL_DIR=/opt/freesurfer/local \
+    FREESURFER_HOME=/opt/freesurfer \
+    FSFAST_HOME=/opt/freesurfer/fsfast \
+    MINC_BIN_DIR=/opt/freesurfer/mni/bin \
+    MINC_LIB_DIR=/opt/freesurfer/mni/lib \
+    MNI_DATAPATH=/opt/freesurfer/mni/data \
+    FMRI_ANALYSIS_DIR=/opt/freesurfer/fsfast \
+    PERL5LIB=/opt/freesurfer/mni/lib/perl5/5.8.5 \
+    MNI_PERL5LIB=/opt/freesurfer/mni/lib/perl5/5.8.5 \
+    PATH=/opt/freesurfer/bin:/opt/freesurfer/fsfast/bin:/opt/freesurfer/tktools:/opt/freesurfer/mni/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
 # Configure bashrc to source FreeSurferEnv.sh
 RUN /bin/bash -c 'echo -e "source $FREESURFER_HOME/FreeSurferEnv.sh &>/dev/null" >> /root/.bashrc'
