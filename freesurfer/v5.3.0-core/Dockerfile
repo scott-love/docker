@@ -13,9 +13,9 @@
 #     sclove/freesurfer5.3-core:latest \
 #     mri_convert -at /input/inputvolume.nii /output/outvolume.mgz
 
-# Start with Ubuntu 14.04 (Trusty)
-FROM ubuntu:trusty
 
+# Start with Ubuntu 14.04 (Trusty), pinned to a specific image digest
+FROM ubuntu:trusty@sha256:64483f3496c1373bfd55348e88694d1c4d0c9b660dee6bfef5e12f43b9933b30
 
 # Install dependencies for FreeSurfer 5.3
 RUN apt-get -o Acquire::Check-Valid-Until=false update \
