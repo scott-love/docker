@@ -1,29 +1,40 @@
-# Create a Freesurfer 5.3 docker container without the subjects, trctrain, and average data.
+
+# FreeSurfer 5.3 core Docker image
 #
-# Example build:
-#   docker build --tag slove/freesurfer5.3-core:latest .
-#
-# Note: The resulting container is ~3GB.
-#
-# Example build:
-#   docker build --tag slove/freesurfer5.3-core:latest .
+# Build:
+#   docker build --platform linux/amd64 \
+#     --tag sclove/freesurfer5.3-core:latest .
 #
 # Example usage:
 #   docker run --rm -ti \
-#       -v /input/directory:/input \
-#       -v `/output/directory:/output \
-#       slove/freesurfer-core:5.3 \
-#       mri_convert -at /input/inputvolume.nii /output/outvolume.mgz
-#
+#     --platform linux/amd64 \
+#     -v /input/directory:/input \
+#     -v /output/directory:/output \
+#     sclove/freesurfer5.3-core:latest \
+#     mri_convert -at /input/inputvolume.nii /output/outvolume.mgz
 
-# Start with ubuntu
+# Start with Ubuntu 14.04 (Trusty)
 FROM ubuntu:trusty
 
-# Install dependencies for FS
-# Download FS_v5.3.0 from MGH and untar to /opt
-RUN apt-get update \
-    && apt-get -y install tcsh tar wget libgomp1 perl-modules bc \
-    && wget -N -qO- ftp://surfer.nmr.mgh.harvard.edu/pub/dist/freesurfer/5.3.0/freesurfer-Linux-centos4_x86_64-stable-pub-v5.3.0.tar.gz | tar -xzv -C /opt \
+
+# Install dependencies for FreeSurfer 5.3
+RUN apt-get -o Acquire::Check-Valid-Until=false update \
+    && apt-get install -y --no-install-recommends \
+         tcsh \
+         tar \
+         wget \
+         libgomp1 \
+         perl-modules \
+         bc \
+    && rm -rf /var/lib/apt/lists/*
+
+
+# Download and install FreeSurfer 5.3.0
+RUN wget --tries=5 --timeout=60 \
+      -O /tmp/freesurfer.tar.gz \
+      https://surfer.nmr.mgh.harvard.edu/pub/dist/freesurfer/5.3.0/freesurfer-Linux-centos4_x86_64-stable-pub-v5.3.0.tar.gz \
+    && tar -xzf /tmp/freesurfer.tar.gz -C /opt \
+    && rm /tmp/freesurfer.tar.gz \
     && rm -rf /opt/freesurfer/subjects/* \
     && rm -rf /opt/freesurfer/average/* \
     && rm -rf /opt/freesurfer/trctrain/* \
@@ -32,7 +43,7 @@ RUN apt-get update \
 # Configure license
 COPY license /opt/freesurfer/.license
 
-# Configure basic freesurfer ENV
+# Configure basic FreeSurfer environment
 ENV OS Linux
 ENV FS_OVERRIDE 0
 ENV FIX_VERTEX_AREA=
@@ -51,4 +62,4 @@ ENV MNI_PERL5LIB /opt/freesurfer/mni/lib/perl5/5.8.5
 ENV PATH /opt/freesurfer/bin:/opt/freesurfer/fsfast/bin:/opt/freesurfer/tktools:/opt/freesurfer/mni/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
 # Configure bashrc to source FreeSurferEnv.sh
-RUN /bin/bash -c ' echo -e "source $FREESURFER_HOME/FreeSurferEnv.sh &>/dev/null" >> /root/.bashrc '
+RUN /bin/bash -c 'echo -e "source $FREESURFER_HOME/FreeSurferEnv.sh &>/dev/null" >> /root/.bashrc'
