@@ -1,0 +1,77 @@
+--- a/recon-all
++++ b/recon-all
+@@ -6238,34 +6238,54 @@
+     exit 1;
+   endif
+ 
+-  if(! -e ${GCADIR}/$GCA ) then
+-    echo "ERROR: cannot find ${GCADIR}/$GCA" |& tee -a $LF
+-    exit 1;
++  # BEGIN LOCAL PATCH: conditional atlas preflight checks.
++# Main GCA: only needed by GCA-based processing stages.
++  if($DoGCAReg || $DoCANormalize || $DoCAReg || $DoRemoveNeck || $DoCALabel || $DoMultiStrip) then
++    if(! -e ${GCADIR}/$GCA ) then
++      echo "ERROR: cannot find ${GCADIR}/$GCA" |& tee -a $LF
++      exit 1;
++    endif
+   endif
+ 
+-  if(! -e ${GCADIR}/$GCASkull ) then
+-    echo "ERROR: cannot find ${GCADIR}/$GCASkull" \
+-      |& tee -a $LF
+-    exit 1;
++  # Skull GCA: only needed for atlas-assisted skull stripping or skull LTA.
++  set NeedGCASkull = 0
++  if($DoSkullLTA) set NeedGCASkull = 1
++  if($DoSkullStrip) then
++    if($WSGcaAtlas || $DoMultiStrip) set NeedGCASkull = 1
+   endif
++  if($NeedGCASkull) then
++    if(! -e ${GCADIR}/$GCASkull ) then
++      echo "ERROR: cannot find ${GCADIR}/$GCASkull" \
++        |& tee -a $LF
++      exit 1;
++    endif
++  endif
+ 
+   foreach hemi ($hemilist)
+-    set avgtif = ${AvgCurvTifPath}/$hemi.${AvgCurvTif};
+-    if(! -e $avgtif) then
+-      echo "ERROR: cannot find $avgtif."
+-      exit 1;
++    # Average curvature: needed by surface registration/statistics.
++    if($DoSurfReg || $DoAvgCurv) then
++      set avgtif = ${AvgCurvTifPath}/$hemi.${AvgCurvTif};
++      if(! -e $avgtif) then
++        echo "ERROR: cannot find $avgtif."
++        exit 1;
++      endif
+     endif
+-    set GCSHemi = ${GCSDIR}/$hemi.$GCS
+-    if(! -e $GCSHemi) then
+-      echo "ERROR: cannot find $GCSHemi."
+-      exit 1;
+-    endif
+-    set CPAtlas = ${GCSDIR}/$hemi.$GCS
+-    if(! -e $CPAtlas) then
+-      echo "ERROR: cannot find $CPAtlas."
+-      exit 1;
++
++    # GCS: needed by cortical parcellation.
++    if($DoCortParc) then
++      set GCSHemi = ${GCSDIR}/$hemi.$GCS
++      if(! -e $GCSHemi) then
++        echo "ERROR: cannot find $GCSHemi."
++        exit 1;
++      endif
++      set CPAtlas = ${GCSDIR}/$hemi.$GCS
++      if(! -e $CPAtlas) then
++        echo "ERROR: cannot find $CPAtlas."
++        exit 1;
++      endif
+     endif
+   end
++# END LOCAL PATCH
+ 
+   if($XOptsUse == 1 && $XOptsClean == 1) then
+     echo "ERROR: cannot specify both -xopts-clean and -xopts-use"

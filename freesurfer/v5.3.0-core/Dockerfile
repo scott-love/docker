@@ -26,6 +26,7 @@ RUN apt-get -o Acquire::Check-Valid-Until=false update \
          libgomp1 \
          perl-modules \
          bc \
+         patch \
     && rm -rf /var/lib/apt/lists/*
 
 
@@ -42,6 +43,14 @@ RUN wget --tries=5 --timeout=60 \
     && rm -rf /opt/freesurfer/average/* \
     && rm -rf /opt/freesurfer/trctrain/* \
     && mkdir /output
+
+# Apply local patch for conditional atlas preflight checks
+COPY patches/0001-conditional-atlas-preflight.patch /tmp/0001-conditional-atlas-preflight.patch
+
+RUN cd /opt/freesurfer/bin \
+    && patch --batch --forward -p1 < /tmp/0001-conditional-atlas-preflight.patch \
+    && grep -q "BEGIN LOCAL PATCH: conditional atlas preflight checks" recon-all \
+    && rm /tmp/0001-conditional-atlas-preflight.patch
 
 # Configure license
 COPY license /opt/freesurfer/.license
