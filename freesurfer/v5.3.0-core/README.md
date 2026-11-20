@@ -113,6 +113,32 @@ it only when needed. Avoid disabling X11 access control with `xhost +`.
 See the [TkSurfer label guide](https://freesurfer.net/fswiki/TkSurferGuide/TkSurferWorkingWithData/TkSurferLabel)
 for drawing and saving labels.
 
+## Freeview on macOS
+
+Freeview uses the same Docker Desktop and XQuartz setup described above.
+Build an image containing the Freeview dependencies:
+
+```bash
+TAG=2026-11-freeview ./build.sh
+```
+
+Launch Freeview with the directory containing your subjects:
+
+```bash
+./run-freeview-macos.sh "/path/to/subjects"
+```
+
+In Freeview, browse to `/subjects` to open your files. To use a different
+locally available image, pass it as the second argument:
+
+```bash
+./run-freeview-macos.sh "/path/to/subjects" my-image:my-tag
+```
+
+The mounted directory is writable. Back up your data before editing;
+files created by the container may be owned by root. Linux and Windows
+have not been tested.
+
 ## Local Modifications
 
 ### Conditional atlas preflight checks

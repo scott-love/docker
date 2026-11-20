@@ -30,6 +30,12 @@ RUN apt-get -o Acquire::Check-Valid-Until=false update \
          libglu1-mesa \
          libxmu6 \
          libgl1-mesa-glx \
+         libxrender1 \
+         libfontconfig1 \
+         libglib2.0-0 \
+         libxss1 \
+         libxft2 \
+         libjpeg62 \
     && rm -rf /var/lib/apt/lists/*
 
 
