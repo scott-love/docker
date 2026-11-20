@@ -61,6 +61,58 @@ docker run --rm -ti \
 
 The `-v` flag mounts your local data directory inside the container at `/subjects`, which is configured as FreeSurfer's default subjects directory.
 
+## TkSurfer on macOS
+
+The image includes TkSurfer for viewing reconstructed surfaces and editing
+labels. The launcher below is for macOS; Linux and Windows have not yet been
+tested.
+
+### One-time setup
+
+1. Install and start [Docker Desktop](https://www.docker.com/products/docker-desktop/)
+   and [XQuartz](https://www.xquartz.org/).
+2. In XQuartz **Settings → Security**, enable **Allow connections from network clients**.
+3. Quit XQuartz completely. In Terminal, enable indirect OpenGL and restart XQuartz:
+
+   ```bash
+   defaults write org.xquartz.X11 enable_iglx -bool true
+   open -a XQuartz
+   ```
+
+4. Build the image:
+
+   ```bash
+   TAG=2026-11-tksurfer ./build.sh
+   ```
+
+### Open a surface
+
+Run the launcher with the directory containing your subject, the subject
+name, hemisphere (`lh` or `rh`), and surface name:
+
+```bash
+./run-tksurfer-macos.sh "/path/to/subjects" Nitzsche_surf rh white
+```
+
+The launcher defaults to `sclove/freesurfer5.3-core:2026-11-tksurfer`.
+To use another locally available image, pass it as a fifth argument:
+
+```bash
+./run-tksurfer-macos.sh "/path/to/subjects" Nitzsche_surf rh white \
+  my-image:my-tag
+```
+
+Save labels inside the subject's `label` directory to keep them after the
+container exits. The mounted subject directory is writable; back up your
+data before editing. Files created by the container may be owned by root.
+
+The launcher uses an XQuartz authentication cookie; do not share it.
+XQuartz's network-client setting exposes its display listener, so enable
+it only when needed. Avoid disabling X11 access control with `xhost +`.
+
+See the [TkSurfer label guide](https://freesurfer.net/fswiki/TkSurferGuide/TkSurferWorkingWithData/TkSurferLabel)
+for drawing and saving labels.
+
 ## Local Modifications
 
 ### Conditional atlas preflight checks

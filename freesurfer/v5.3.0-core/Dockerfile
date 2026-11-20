@@ -27,6 +27,9 @@ RUN apt-get -o Acquire::Check-Valid-Until=false update \
          perl-modules \
          bc \
          patch \
+         libglu1-mesa \
+         libxmu6 \
+         libgl1-mesa-glx \
     && rm -rf /var/lib/apt/lists/*
 
 
